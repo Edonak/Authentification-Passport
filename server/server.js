@@ -1,6 +1,6 @@
 //npm modules
 const express = require('express');
-const uuid = require('uuid/v4')
+const uuid = require('uuid').v4
 const session = require('express-session')
 // creatio du server
 const app = express();
