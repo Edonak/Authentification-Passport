@@ -1,16 +1,29 @@
 //npm modules
 const express = require('express');
-
-// create the server
+const uuid = require('uuid/v4')
+const session = require('express-session')
+// creatio du server
 const app = express();
 
-// create the homepage route at '/'
+// Ajout et Configuration du middleware
+app.use(session({
+  genid: (req) => {
+    console.log('Inside the session middleware')
+    console.log(req.sessionID)
+    return uuid() // use UUIDs for session IDs
+  },
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}))
+
+// Création de la route pour la page home
 app.get('/', (req, res) => {
-  console.log(req)
-  res.send('You hit the home page without restarting the server automatically\n')
+  console.log('Inside the homepage callback function')
+  console.log(req.sessionID)
+  res.send(`You hit home page!\n`)
 })
 
-// tell the server what port to listen on
 app.listen(3000, () => {
   console.log('Listening on localhost:3000')
 })
