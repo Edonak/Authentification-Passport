@@ -2,7 +2,8 @@
 const express = require('express');
 const uuid = require('uuid').v4
 const session = require('express-session')
-// creatio du server
+const FileStore = require('session-file-store')(session);
+// creation du server
 const app = express();
 
 // Ajout et Configuration du middleware
@@ -12,6 +13,7 @@ app.use(session({
     console.log(req.sessionID)
     return uuid() // use UUIDs for session IDs
   },
+  store: new FileStore(),
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true
@@ -24,6 +26,18 @@ app.get('/', (req, res) => {
   res.send(`You hit home page!\n`)
 })
 
+// create the login get and post routes
+app.get('/login', (req, res) => {
+  console.log('Inside GET /login callback function')
+  console.log(req.sessionID)
+  res.send(`You got the login page!\n`)
+})
+
+app.post('/login', (req, res) => {
+  console.log('Inside POST /login callback function')
+  console.log(req.body)
+  res.send(`You posted to the login page!\n`)
+})
 app.listen(3000, () => {
   console.log('Listening on localhost:3000')
 })
